@@ -88,7 +88,10 @@ class PostView(APIView):
             return Response({'error': 'URL not found'})
         
         data = {}
-        post = Post.objects.get(id = id)
+
+        post = Post.objects.filter(id = id)
+        if post is None:
+            return Response({'error': 'Post is not found with this id'})
         post_serializer = PostSerializer(post)
         likes = len(Like.objects.filter(post = post))
         data = {
